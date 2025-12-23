@@ -6,6 +6,20 @@ const product = ref("Socks");
 const description = ref("A pair of warm, fuzzy socks");
 const image = ref(socksGreenImage);
 const inventory = ref(100);
+const varients = ref([
+  { id: 1, color: "green" },
+  { id: 2, color: "blue" },
+]);
+const listColor = (color) => {
+  switch (color) {
+    case "blue":
+      return "before:text-blue-500";
+    case "green":
+      return "before:text-green-500";
+    default:
+      return "before:text-gray-400";
+  }
+};
 </script>
 
 <template>
@@ -25,6 +39,19 @@ const inventory = ref(100);
           Almost Sold Out!
         </p>
         <p class="text-lg font-semibold" v-else>Out of Stock</p>
+        <div class="mt-6">
+          <h2 class="text-xl font-semibold mb-2">Varients</h2>
+          <ul class="list-none">
+            <li
+              v-for="varient in varients"
+              :key="varient.id"
+              class="before:content-['⬤'] before:mr-2 before:text-3xl flex items-center capitalize"
+              :class="listColor(varient.color)"
+            >
+              {{ varient.color }}
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
