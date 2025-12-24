@@ -51,6 +51,12 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.disabledButton {
+  background-color: #d8d8d8;
+  color: #9a9a9a;
+  cursor: not-allowed;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

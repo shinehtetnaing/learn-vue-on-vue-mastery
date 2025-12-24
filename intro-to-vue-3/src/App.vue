@@ -51,7 +51,11 @@ const updateImage = (varientImage) => {
   <div class="flex flex-col px-8 py-12">
     <div class="flex flex-col sm:flex-row gap-10">
       <div class="w-sm sm:w-125">
-        <img :src="image" class="shadow rounded-xl" />
+        <img
+          :src="image"
+          class="shadow rounded-xl"
+          :class="{ 'opacity-50': !inventory }"
+        />
       </div>
       <div>
         <h1 class="text-5xl/tight mb-5">{{ product }}</h1>
@@ -78,8 +82,20 @@ const updateImage = (varientImage) => {
             </li>
           </ul>
         </div>
-        <button class="mt-6 mr-5" @click="addToCart">Add to Cart</button>
-        <button class="mt-6 bg-gray-500!" @click="removeFromCart">
+        <button
+          class="mt-6 mr-5"
+          @click="addToCart"
+          :disabled="inventory <= 0"
+          :class="{ disabledButton: !inventory }"
+        >
+          Add to Cart
+        </button>
+        <button
+          class="mt-6 bg-gray-500!"
+          @click="removeFromCart"
+          :disabled="!cart"
+          :class="{ disabledButton: !cart }"
+        >
           Remove from Cart
         </button>
       </div>
