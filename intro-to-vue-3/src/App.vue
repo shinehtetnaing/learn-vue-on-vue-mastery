@@ -1,17 +1,20 @@
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import socksGreenImage from "./assets/images/socks_green.jpeg";
 import socksBlueImage from "./assets/images/socks_blue.jpeg";
 
 const product = ref("Socks");
+const brand = ref("Vue Mastery");
 const description = ref("A pair of warm, fuzzy socks");
-const image = ref(socksGreenImage);
+const selectedVarient = ref(0);
 
-const inventory = ref(100);
+// const image = ref(socksGreenImage);
+
+// const inventory = ref(100);
 
 const varients = ref([
-  { id: 1, color: "green", image: socksGreenImage },
-  { id: 2, color: "blue", image: socksBlueImage },
+  { id: 1, color: "green", image: socksGreenImage, quantity: 50 },
+  { id: 2, color: "blue", image: socksBlueImage, quantity: 0 },
 ]);
 
 const listColor = (color) => {
@@ -27,6 +30,18 @@ const listColor = (color) => {
 
 const cart = ref(0);
 
+const title = computed(() => {
+  return brand.value + " " + product.value;
+});
+
+const image = computed(() => {
+  return varients.value[selectedVarient.value].image;
+});
+
+const inventory = computed(() => {
+  return varients.value[selectedVarient.value].quantity;
+});
+
 const addToCart = () => (cart.value += 1);
 
 const removeFromCart = () => {
@@ -35,8 +50,8 @@ const removeFromCart = () => {
   }
 };
 
-const updateImage = (varientImage) => {
-  image.value = varientImage;
+const updateVarient = (index) => {
+  selectedVarient.value = index;
 };
 </script>
 
@@ -58,7 +73,7 @@ const updateImage = (varientImage) => {
         />
       </div>
       <div>
-        <h1 class="text-5xl/tight mb-5">{{ product }}</h1>
+        <h1 class="text-5xl/tight mb-5">{{ title }}</h1>
         <p class="text-xl mb-3">{{ description }}</p>
         <p class="text-lg font-semibold" v-if="inventory > 10">In Stock</p>
         <p
@@ -72,11 +87,11 @@ const updateImage = (varientImage) => {
           <h2 class="text-xl font-semibold mb-2">Varients</h2>
           <ul class="list-none w-fit">
             <li
-              v-for="varient in varients"
+              v-for="(varient, index) in varients"
               :key="varient.id"
               class="before:content-['⬤'] before:mr-2 before:text-3xl flex items-center capitalize"
               :class="listColor(varient.color)"
-              @mouseover="updateImage(varient.image)"
+              @mouseover="updateVarient(index)"
             >
               {{ varient.color }}
             </li>
