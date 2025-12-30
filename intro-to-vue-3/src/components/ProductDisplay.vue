@@ -8,7 +8,12 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
+  cart: {
+    type: Array,
+  },
 });
+
+const emit = defineEmits(["add-to-cart", "remove-from-cart"]);
 
 const product = ref("Socks");
 const brand = ref("Vue Mastery");
@@ -47,12 +52,14 @@ const shipping = computed(() => {
   return props.premium ? "Free" : "$2.99";
 });
 
-const addToCart = () => (cart.value += 1);
+const addToCart = () =>
+  emit("add-to-cart", varients.value[selectedVarient.value].id);
 
 const removeFromCart = () => {
-  if (cart.value >= 1) {
-    cart.value -= 1;
-  }
+  // if (cart.value >= 1) {
+  //   cart.value -= 1;
+  // }
+  emit("remove-from-cart", varients.value[selectedVarient.value].id);
 };
 
 const updateVarient = (index) => {
@@ -107,8 +114,8 @@ const updateVarient = (index) => {
         <button
           class="mt-6 bg-gray-500!"
           @click="removeFromCart"
-          :disabled="!cart"
-          :class="{ disabledButton: !cart }"
+          :disabled="!cart.length"
+          :class="{ disabledButton: !cart.length }"
         >
           Remove from Cart
         </button>
