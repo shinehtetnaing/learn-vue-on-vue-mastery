@@ -1,7 +1,9 @@
 <script setup>
 import { computed, ref } from "vue";
-import socksGreenImage from "../assets/images/socks_green.jpeg";
 import socksBlueImage from "../assets/images/socks_blue.jpeg";
+import socksGreenImage from "../assets/images/socks_green.jpeg";
+import ReviewForm from "./ReviewForm.vue";
+import ReviewList from "./ReviewList.vue";
 
 const props = defineProps({
   premium: {
@@ -24,6 +26,8 @@ const varients = ref([
   { id: 1, color: "green", image: socksGreenImage, quantity: 50 },
   { id: 2, color: "blue", image: socksBlueImage, quantity: 0 },
 ]);
+
+const reviews = ref([]);
 
 const listColor = (color) => {
   switch (color) {
@@ -65,10 +69,14 @@ const removeFromCart = () => {
 const updateVarient = (index) => {
   selectedVarient.value = index;
 };
+
+const addReview = (productReview) => {
+  reviews.value.push(productReview);
+};
 </script>
 
 <template>
-  <div class="flex flex-col px-8 py-12">
+  <div class="flex flex-col gap-10 px-8 py-12">
     <div class="flex flex-col sm:flex-row gap-10">
       <div class="w-sm sm:w-125">
         <img
@@ -120,6 +128,12 @@ const updateVarient = (index) => {
           Remove from Cart
         </button>
       </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-10">
+      <ReviewForm @review-submitted="addReview"></ReviewForm>
+
+      <ReviewList v-if="reviews.length > 0" :reviews="reviews"></ReviewList>
     </div>
   </div>
 </template>
